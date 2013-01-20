@@ -17,10 +17,13 @@ Insert using shortcode to any post or directly to template using do_shortcode();
 = Usage example =
 [icecast live=0]
 
-Parameters:
+= Parameters =
 live:
 	0 - simple text
 	1 - live update via JavaScript
+	
+= NOTE =
+You need to update your IceCast web folder with "xml.xsl" file (included with plugin). See Installation for more information...
 
 == Installation ==
 
@@ -28,9 +31,10 @@ live:
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Go to plugin settings and set server address and publishpoint name
 
-Icecast server configuration:
+= Icecast server configuration: =
 You need to update your IceCast configuration with one file "xml.xsl" (embeded with this plugin).
 Just upload this file to "/web" folder of your IceCast installation dir. This will open XML stats to everyone... XML will output public data as the default IceCast page do.
+This will allow this plugin to read publish point info without IceCast admin password. This is mainly for security of your IceCast instalation.
 
 == Changelog ==
 
