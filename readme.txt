@@ -36,6 +36,10 @@ You need to update your IceCast configuration with one file "xml.xsl" (embeded w
 Just upload this file to "/web" folder of your IceCast installation dir. This will open XML stats to everyone... XML will output public data as the default IceCast page do.
 This will allow this plugin to read publish point info without IceCast admin password. This is mainly for security of your IceCast instalation.
 
+== Screenshots ==
+
+1. Settings of plugin
+
 == Changelog ==
 
 = 1.0 =
