@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=P6CKT
 Tags: onair, radio, icecast, song, current,shortcode
 Requires at least: 3.3.1
 Tested up to: 3.5
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 
 Shortcode to display onair song fetched from IceCast server (v2).
 
@@ -41,6 +41,11 @@ This will allow this plugin to read publish point info without IceCast admin pas
 1. Settings of plugin
 
 == Changelog ==
+
+= 1.1.1 =
+
+- error handling fix
+- added error reporting
 
 = 1.0 =
 

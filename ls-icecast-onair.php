@@ -3,7 +3,7 @@
 Plugin Name: LS IceCast ONAIR
 Plugin URI: http://git.ladasoukup.cz/wp-icecast-onair-song-wp-plugin
 Description: Shortcode to display onair song fetched from IceCast server (v2).
-Version: 1.1.0
+Version: 1.1.1
 Author: Ladislav Soukup
 Author URI: http://www.ladasoukup.cz/
 */
@@ -62,6 +62,7 @@ function ls_icecast_admin() {
 				<tr><td><strong>Icecast server (url): </strong></td><td><input type="text" style="width: 410px;" name="ls_icecast_url" value="<?php echo get_option('ls_icecast_url'); ?>" /></td></tr>
 				<tr><td><strong>Mount name: </strong></td><td><input type="text" style="width: 410px;" name="ls_icecast_mount" value="<?php echo get_option('ls_icecast_mount'); ?>" /></td></tr>
 				<tr><td><strong>Current value: </strong></td><td><?php echo get_option('ls_icecast_ONAIRdata'); ?></td></tr>
+				<tr><td><strong>Last error: </strong></td><td><?php echo get_option('ls_icecast_errorlog', ''); ?></td></tr>
 			</table>
 		</div>
 		<div>
@@ -88,10 +89,14 @@ function cron_ls_icecast__do() {
 	$url = get_option('ls_icecast_url') . '/xml.xsl?ts='.time();
 	$mount = '/' . get_option('ls_icecast_mount'); $mount = str_replace('//', '/', $mount);
 	
-	$data = wp_remote_get($url);
-	// echo '<pre>'; print_r($data); echo '</pre>';
-	if (!empty($data['body'])) {
-		$data = simplexml_load_string($data['body'], 'SimpleXMLElement', LIBXML_NOCDATA | LIBXML_NOBLANKS);
+	$response = wp_remote_get($url);  /** echo '<pre>'; print_r($response); echo '</pre>'; /**/
+	$response_code = wp_remote_retrieve_response_code( $response );
+	$error = '-';
+	
+	if ( 200 == $response_code ) {
+		$data = wp_remote_retrieve_body( $response );
+		
+		$data = simplexml_load_string($data, 'SimpleXMLElement', LIBXML_NOCDATA | LIBXML_NOBLANKS);
 		foreach ($data as $item) {
 			if ($item->MOUNT == $mount) {
 				// echo '<pre>'; print_r($item); echo '</pre>';
@@ -107,7 +112,11 @@ function cron_ls_icecast__do() {
 				file_put_contents($file, strip_tags($onairdata));
 			}
 		}
+	} else {
+		$error = $response_code . ' - ' . $response->errors['http_request_failed'][0];
 	}
+	
+	update_option( 'ls_icecast_errorlog', $error );
 }
 
 /* === register / deregister hooks === */
